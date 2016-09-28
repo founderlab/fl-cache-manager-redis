@@ -41,7 +41,7 @@ class RedisStore {
      * @param {String} value - The value to check
      * @return {Boolean} - Returns true if the value is cacheable, otherwise false.
      */
-    this.isCacheableValue = options.isCacheableValue || (value => value !== undefined)
+    this.isCacheableValue = options.isCacheableValue || (value => value !== undefined && value !== null)
   }
 
   /**
