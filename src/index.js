@@ -97,7 +97,7 @@ class RedisStore {
     })
   }
 
-  parse(values) {
+  parse = values => {
     if (_.isNull(values) || (values === 'null')) return null
     if (_.isDate(values)) return values
     if (_.isArray(values)) return _.map(values, this.parse)
@@ -126,7 +126,6 @@ class RedisStore {
       }
     }
     return values
-
   }
 
   /**
@@ -138,7 +137,6 @@ class RedisStore {
    */
   handleResponse = (conn, _options, _callback) => {
     const {callback, options} = typeof _options === 'function' ? {callback: _options, options: {}} : {callback: _callback, options: _options || {}}
-
     return (err, _result) => {
       this.pool.release(conn)
       if (err) return callback(err)
