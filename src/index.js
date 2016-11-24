@@ -31,6 +31,7 @@ class RedisStore {
     this._ttl = redisOptions.ttl
     this.db = redisOptions.db
     this.hashFromKey = options.hashFromKey
+    this.stringifyKey = options.stringifyKey
 
     /**
      * Specify which values should and should not be cached.
@@ -97,14 +98,14 @@ class RedisStore {
     })
   }
 
-  parse = values => {
+  parse = (values, key) => {
     if (_.isNull(values) || (values === 'null')) return null
     if (_.isDate(values)) return values
     if (_.isArray(values)) return _.map(values, this.parse)
     if (_.isObject(values)) {
       const result = {}
       _.forEach(values, (value, key) => {
-        result[key] = this.parse(value)
+        result[key] = this.parse(value, key)
       })
       return result
     }
@@ -115,11 +116,13 @@ class RedisStore {
           const date = new Date(values)
           const isValidDate = date.getTime() !== 0 && !!date.getTime()
           if (isValidDate) return date
-          return values
         }
         // Stringified JSON
-        const parsedValues = JSON.parse(values)
-        return this.parse(parsedValues)
+        let parsedValues = JSON.parse(values)
+        if (this.stringifyKey && this.stringifyKey(key) && _.isNumber(parsedValues)) {
+          return parsedValues.toString()
+        }
+        return this.parse(parsedValues, key)
       }
       catch (err) {
         return values
