@@ -1,3 +1,13 @@
+## This package has moved to the [Frameworkstein repository](https://github.com/founderlab/frameworkstein/tree/master/packages/fl-cache-manager-redis)
+
+
+-------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
 Frameworkstein's Node Cache Manager store for Redis
 ==================================
 An alternate Redis store for the [node-cache-manager](https://github.com/BryanDonovan/node-cache-manager) module.
